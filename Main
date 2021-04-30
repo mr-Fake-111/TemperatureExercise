@@ -1,0 +1,134 @@
+#include <experimental/random>
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+void upperZero(int* arr, int size) {
+    int val = 0;
+    for(int i = 0; i < size; i++) {
+        if(arr[i] > 0) val++;
+    }
+    cout << "Дней с температурой больше нуля: " << val << "\n";
+}
+
+void firstUpperZeroDay(int* arr, int size) {
+    for(int i = 0; i < size; i++) {
+        if(arr[i] > 0) {
+            cout << "Первый день с положительной температурой в феврале: " << (i+1) << " февраля \n";
+            return;
+        }
+    }
+}
+
+void minMaxDates(int* arr, int size) {
+    int min = 11, max = -16, minI = 0, maxI = 27;
+    for(int i = 0; i < size; i++) {
+        if(arr[i] < min) {
+            min = arr[i];
+            minI = i;
+        }
+        if(arr[i] > max) {
+            max = arr[i];
+            maxI = i;
+        }
+    }
+    cout << "День с самой низкой температурой: " << (minI+1) << " февраля \n";
+    cout << "День с самой высокой температурой: " << (maxI+1) << " февраля \n";
+}
+
+void tempDifference(int* arr, int size) {
+    int min = 11, max = -16;
+    for(int i = 0; i < size; i++) {
+        if(arr[i] < min) {
+            min = arr[i];
+        }
+        if(arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    cout << "Диапазон изменения температуры: " << (max-min) << " градусов \n";
+}
+
+void maxPrevDiff(int* arr, int size) {
+    int maxPrev = 0;
+    int currPrev;
+    int maxI = 0;
+    for(int i = 1; i < size; i++) {
+        currPrev = arr[i] - arr[i-1];
+        if(currPrev > maxPrev) {
+            maxI = i;
+            maxPrev = currPrev;
+        }
+    }
+    cout << "Наибольшее изменение температуры наблюдалось " << (maxI+1) << " февраля. Скачок составил " << maxPrev << " градусов \n";
+}
+
+void lessThanOneDegree(int* arr, int size) {
+    double sum = 0, middle = 0;
+    for(int i = 0; i < size; i++) {
+        sum += arr[i];
+    }
+    middle = sum/size;
+
+    int val = 0;
+    for(int i = 0; i < size; i++) {
+        if( abs(middle - arr[i]) <= 1) {
+            val++;
+        }
+    }
+    cout << "Дней с отклонением от средней температуры менее, чем на 1 градус: " << val << "\n";
+}
+
+void minDiffWithMiddle(int* arr, int size) {
+    double sum = 0, middle = 0;
+    for(int i = 0; i < size; i++) {
+        sum += arr[i];
+    }
+    middle = sum/size;
+
+    int minDiff = 40, minDate = 0;
+    for(int i = 0; i < size; i++) {
+        if( abs(middle - arr[i]) < minDiff) {
+            minDate = i;
+            minDiff = abs(middle - arr[i]);
+        }
+    }
+    cout << "Дата, когда значение температуры оказалось наиболее близким к среднемесячному: " << (minDate+1) << " февраля \n";
+}
+
+void lengthOfStability(int* arr, int size) {
+    int maxLength = 1, length = 1;
+    for(int i = 1; i < size; i++) {
+       if(arr[i] == arr[i-1]) {
+           length++;
+           if(length > maxLength) maxLength = length;
+       } else {
+           length = 1;
+       }
+    }
+    cout << "Максимальный период стабильности: " << maxLength << " дней \n"; 
+}
+
+int main()
+{
+    int feb[28];
+    cout << "Температурные наблюдения за февраль: ";
+    for(int i = 0; i < 28; i++) {
+        feb[i] = std::experimental::randint(-15,10);
+        cout << feb[i] << " ";
+    }
+    cout << "\n";
+
+    upperZero(feb, 28);
+    firstUpperZeroDay(feb, 28);
+    minMaxDates(feb, 28);
+    tempDifference(feb, 28);
+    maxPrevDiff(feb, 28);
+    lessThanOneDegree(feb, 28);
+    minDiffWithMiddle(feb, 28);
+    lengthOfStability(feb, 28);
+
+    return 0;
+}
